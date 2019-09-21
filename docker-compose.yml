@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+    web:
+        image: programmerq/enjoy.cf
+        build: .
+        deploy:
+            labels:
+                - "traefik.enable=true"
+                - "traefik.http.middlewares.redir-https.redirectscheme.scheme=https"
+                - "traefik.http.routers.enjoycf.rule=Host(`enjoy.cf`)"
+                - "traefik.http.routers.enjoycf.middlewares=redir-https@docker"
+                - "traefik.http.routers.enjoycf-sec.rule=Host(`enjoy.cf`)"
+                - "traefik.http.routers.enjoycf-sec.entrypoints=websecure,web"
+                - "traefik.http.routers.enjoycf-sec.tls.certresolver=mycf"
+                - "traefik.http.services.enjoycf-sec.loadbalancer.server.port=80"
+        networks:
+            traefik:
+networks:
+    traefik:
+        external: true
