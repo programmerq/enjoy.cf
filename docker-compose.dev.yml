@@ -1,0 +1,11 @@
+version: "3.6"
+services:
+    web:
+        image: jekyll/builder
+        command: jekyll serve -I --watch --livereload --livereload-port 4001 --config _config.yml
+        ports:
+            - "4000:4000"
+            - "4001:4001"
+        volumes:
+            - .:/srv/jekyll
+            - /usr/local/bundle
