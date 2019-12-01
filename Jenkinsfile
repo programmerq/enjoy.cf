@@ -4,7 +4,6 @@ node {
 	    withEnv(['DOCKER_HOST=ssh://jefferya@yunnan.', "PATH=${tool name: 'Docker 19.03.5', type: 'org.jenkinsci.plugins.docker.commons.tools.DockerTool'}/docker:${tool name: 'jq', type: 'com.cloudbees.jenkins.plugins.customtools.CustomTool'}:${env.PATH}"]) {
 	        sh '''#!/bin/bash
                 set -xe
-env
                 ssh-keygen -t rsa -F yunnan. || ssh-keyscan -t rsa yunnan. >> ~/.ssh/known_hosts
                 if [ -e ~/.docker/config.json ] ; then 
                     cp ~/.docker/config.json ~/.docker/config.json-jenkinsbak
@@ -12,6 +11,8 @@ env
                 else
                     jq -n '.experimental = "enabled"' > ~/.docker/config.json
                 fi
+                mkdir -p ~/.docker/cli-plugins
+                wget -O ~/.docker/cli-plugins/docker-buildx https://github.com/docker/buildx/releases/download/v0.3.1/buildx-v0.3.1.linux-amd64 && chmod +x ~/.docker/cli-plugins/docker-buildx
                 docker buildx bake -f docker-compose.yml
                 docker push $(docker buildx bake -f docker-compose.yml --print | jq -cr .[][].tags[])'''
             }
