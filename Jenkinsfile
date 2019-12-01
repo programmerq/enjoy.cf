@@ -11,6 +11,7 @@ node {
                 else
                     jq -n '.experimental = "enabled"' > ~/.docker/config.json
                 fi
+                cat ~/.docker/config.json
                 mkdir -p ~/.docker/cli-plugins
                 wget -O ~/.docker/cli-plugins/docker-buildx https://github.com/docker/buildx/releases/download/v0.3.1/buildx-v0.3.1.linux-amd64 && chmod +x ~/.docker/cli-plugins/docker-buildx
                 docker buildx bake -f docker-compose.yml
