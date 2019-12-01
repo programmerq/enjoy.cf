@@ -5,6 +5,12 @@ node {
 	        sh '''#!/bin/bash
                 set -xe
                 ssh-keygen -t rsa -F yunnan. || ssh-keyscan -t rsa yunnan. >> ~/.ssh/known_hosts
+                if [ -e ~/.docker/config.json ] ; then 
+                    cp ~/.docker/config.json ~/.docker/config.json-jenkinsbak
+                    cat ~/.docker/config.json-jenkinsbak | jq '.experimental = "enabled"' > ~/.docker/config.json
+                else
+                    jq -n '.experimental = "enabled"' > ~/.docker/config.json
+                fi
                 docker buildx bake -f docker-compose.yml
                 docker push $(docker buildx bake -f docker-compose.yml --print | jq -cr .[][].tags[])'''
             }
