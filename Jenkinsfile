@@ -1,4 +1,7 @@
 node {
+    stage('Checkout') {
+        checkout scm
+    }
     stage('Build') {
         sshagent(['37850802-4ab0-4ffc-b519-2753a85e9625']) {
 	    withEnv(['DOCKER_HOST=ssh://jefferya@yunnan.', "PATH=${tool name: 'Docker 19.03.5', type: 'org.jenkinsci.plugins.docker.commons.tools.DockerTool'}/docker:${tool name: 'jq', type: 'com.cloudbees.jenkins.plugins.customtools.CustomTool'}:${env.PATH}"]) {
