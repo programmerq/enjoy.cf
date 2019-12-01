@@ -17,8 +17,6 @@ node {
                 cat ~/.docker/config.json
                 mkdir -p ~/.docker/cli-plugins
                 wget --quiet -O ~/.docker/cli-plugins/docker-buildx https://github.com/docker/buildx/releases/download/v0.3.1/buildx-v0.3.1.linux-amd64 && chmod +x ~/.docker/cli-plugins/docker-buildx
-                pwd
-                find .
                 docker buildx bake -f docker-compose.yml
                 docker push $(docker buildx bake -f docker-compose.yml --print | jq -cr .[][].tags[])'''
             }
