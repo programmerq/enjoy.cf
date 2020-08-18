@@ -12,7 +12,6 @@ services:
                 - "traefik.http.routers.enjoycf.middlewares=redir-https@docker"
                 - "traefik.http.routers.enjoycf-sec.rule=Host(`enjoy.cf`)"
                 - "traefik.http.routers.enjoycf-sec.entrypoints=websecure,web"
-                - "traefik.http.routers.enjoycf-sec.tls.certresolver=mycf"
                 - "traefik.http.services.enjoycf-sec.loadbalancer.server.port=80"
         networks:
             traefik:
